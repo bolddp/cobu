@@ -1,0 +1,20 @@
+{
+  "preset": "ts-jest",
+  "rootDir": "./",
+  "verbose": false,
+  "watchPathIgnorePatterns": ["<rootDir>/jest.json"],
+  "collectCoverage": false,
+  "testRegex": "_test.(t|j)s$",
+  "clearMocks": true,
+  "moduleNameMapper": {
+    "^app/(.*)$": "<rootDir>/src/$1"
+  },
+  "collectCoverageFrom": ["src/**/*.{js,ts}", "!**/node_modules/**"],
+  "coverageReporters": ["cobertura", "text", "lcov"],
+  "coverageDirectory": "./test-results/coverage",
+  "testResultsProcessor": "jest-sonar-reporter",
+  "reporters": ["default", "jest-junit", "jest-stare"],
+  "transform": {
+    "^.+\\.(ts|tsx)$": "ts-jest"
+  }
+}

@@ -1,0 +1,61 @@
+{
+  "name": "cobu",
+  "version": "0.0.1",
+  "description": "Command Line Builder - programmable command line utility",
+  "main": "dist/index.js",
+  "files": [
+    "/dist",
+    "README.md"
+  ],
+  "bin": {
+    "cobu": "./dist/index.js"
+  },
+  "scripts": {
+    "clean": "node ./node_modules/rimraf/bin.js ./dist",
+    "test": "jest --config=./jest.config.json",
+    "coverage": "jest --config=./jest.config.json --coverage",
+    "npm:publish": "npm run clean:build && npm publish",
+    "clean:build": "npm run clean && npx tsc --sourcemap false"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bolddp/cobu.git"
+  },
+  "author": "Daniel Persson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bolddp/cobu/issues"
+  },
+  "homepage": "https://github.com/bolddp/cobu#readme",
+  "devDependencies": {
+    "@types/columnify": "1.5.1",
+    "@types/jest": "29.2.4",
+    "jest": "29.3.1",
+    "jest-junit": "15.0.0",
+    "jest-sonar-reporter": "2.0.0",
+    "jest-stare": "2.4.1",
+    "rimraf": "3.0.2",
+    "ts-jest": "29.0.3",
+    "ts-node": "10.9.1",
+    "typescript": "4.9.4"
+  },
+  "dependencies": {
+    "chalk": "4.1.2",
+    "columnify": "1.6.0",
+    "open": "8.4.0"
+  },
+  "jestSonar": {
+    "reportPath": "test-results",
+    "reportFile": "test-report.xml",
+    "indent": 4
+  },
+  "jest-junit": {
+    "outputDirectory": "test-results",
+    "outputName": "junit.xml"
+  },
+  "jest-stare": {
+    "resultDir": "./test-results/jest-stare",
+    "reportTitle": "Test results",
+    "coverageLink": "../coverage/lcov-report/index.html"
+  }
+}
