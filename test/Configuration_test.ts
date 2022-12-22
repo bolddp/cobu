@@ -39,7 +39,7 @@ describe('Configuration', () => {
     });
     expect(fs.writeFileSync).toHaveBeenCalledWith(
       'C:\\Users\\user\\AppData\\Roaming\\cobu\\cobu_config.json',
-      JSON.stringify({ apps: [] }, undefined, 2)
+      JSON.stringify({ apps: [], debugLogging: false }, undefined, 2)
     );
   });
 

@@ -1,14 +1,11 @@
-const loadOrCreateConfigMock = jest.fn();
-const saveConfigMock = jest.fn();
-
 jest.mock('../src/Configuration', () => ({
   ...jest.requireActual('../src/Configuration'),
-  loadOrCreateConfig: loadOrCreateConfigMock,
-  saveConfig: saveConfigMock,
+  loadOrCreateConfig: jest.fn(),
+  saveConfig: jest.fn(),
 }));
 jest.mock('../src/log');
 
-import { Configuration } from '../src/Configuration';
+import { Configuration, loadOrCreateConfig, saveConfig } from '../src/Configuration';
 import { main } from '../src/index';
 import { log } from '../src/log';
 
@@ -18,13 +15,13 @@ describe('index', () => {
   });
 
   it('will config and save flag', async () => {
-    loadOrCreateConfigMock.mockReturnValue({
+    (loadOrCreateConfig as jest.Mock).mockReturnValue({
       apps: [],
     });
 
     await main(['config', 'app', 'flag', 'https://www.example.com']);
 
-    expect(saveConfigMock).toHaveBeenCalledWith({
+    expect(saveConfig).toHaveBeenCalledWith({
       apps: [
         {
           flags: [
@@ -51,7 +48,7 @@ describe('index', () => {
         },
       ],
     };
-    loadOrCreateConfigMock.mockReturnValue(cfg);
+    (loadOrCreateConfig as jest.Mock).mockReturnValue(cfg);
 
     await main(['notExisting']);
 

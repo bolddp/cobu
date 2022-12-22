@@ -15,6 +15,7 @@ export const runApplication = async (ctx: ExecutionContext) => {
 
   // Does the application have flags that we need to match against the command line arguments?
   if ((appConfiguration.flags ?? []).length > 0) {
+    const flags = [...appConfiguration.flags!];
     let index = 0;
     while (index < ctx.args.length) {
       const argment = ctx.args[index];
@@ -27,8 +28,6 @@ export const runApplication = async (ctx: ExecutionContext) => {
           instructions.push(...(node.instructions ?? []));
           ctx.args.splice(index, 1);
           index -= 1;
-        } else {
-          throw unknownFlagError(ctx);
         }
       }
       index += 1;
@@ -79,18 +78,18 @@ const executeActions = async (
   for (const action of actions) {
     switch (action.type) {
       case AppActionType.OpenApp:
-        if (!action.args) {
-          log.info(`Opening app '${action.program}' without arguments`);
+        if ((action.args ?? []).length == 0) {
+          log.info(loc.openingAppWithoutArguments(action.program));
           await open.openApp(action.program);
         } else {
-          const appArgs = [resolveVariables(ctx, action.args, variables)];
-          log.info(`Opening app '${action.program}' with arguments [${appArgs}]`);
+          const appArgs = action.args.map((arg) => resolveVariables(ctx, arg, variables));
+          log.info(loc.openingApp(action.program, action.args));
           await open.openApp(action.program, { arguments: appArgs });
         }
         break;
       case AppActionType.OpenUrl:
         const url = resolveVariables(ctx, action.url, variables);
-        log.info(`Opening URL: ${url}`);
+        log.info(loc.openingUrl(url));
         await open(encodeURI(url));
     }
   }

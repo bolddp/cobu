@@ -42,17 +42,17 @@ const configureNode = async (node: ConfigurationNode, ctx: ExecutionContext) => 
     if (!add) {
       if ((node.instructions ?? []).length > 0) {
         log.info(
-          `Replacing ${node.instructions?.length} instructions in ${
-            ctx.flag ? `flag ${ctx.flag.name}` : `application ${ctx.appConfiguration?.name}`
-          }`
+          loc.replacingInstructions(
+            node.instructions!.length,
+            ctx.appConfiguration!.name,
+            ctx.flag!.name
+          )
         );
       }
       node.instructions = instructions;
     } else {
       log.info(
-        `Adding ${instructions.length} instructions to ${
-          ctx.flag ? `flag ${ctx.flag.name}` : `application ${ctx.appConfiguration?.name}`
-        }`
+        loc.addingInstructions(instructions.length, ctx.appConfiguration!.name, ctx.flag!.name)
       );
       node.instructions = (node.instructions ?? []).concat(instructions);
     }
@@ -82,7 +82,7 @@ const createActionsAndInstructions = (args: Argument[]): ActionsAndInstructions 
         result.actions.push(<OpenAppAction>{
           type: AppActionType.OpenApp,
           program: argment.name,
-          args: argment.value,
+          args: parseArgs(argment.value),
           arg: argment.source,
         });
         break;
@@ -114,4 +114,74 @@ const createActionsAndInstructions = (args: Argument[]): ActionsAndInstructions 
     }
   });
   return result;
+};
+
+export const parseArgs = (str?: string): string[] => {
+  if (!str) {
+    return [];
+  }
+  const result: string[] = [''];
+  let state: 'scan' | 'space' | 'sq' | 'dq' = 'scan';
+  let index = 0;
+  let resultIndex = 0;
+  while (index < str.length) {
+    const char = str[index];
+    switch (state) {
+      case 'scan':
+        if (char == ' ') {
+          // Do nothing
+        } else if (char == '"') {
+          state = 'dq';
+        } else if (char == "'") {
+          state = 'sq';
+        } else {
+          state = 'space';
+          result[resultIndex] += char;
+        }
+        break;
+      case 'space':
+        if (char == ' ') {
+          resultIndex += 1;
+          result[resultIndex] = '';
+          state = 'scan';
+        } else {
+          result[resultIndex] += char;
+        }
+        break;
+      case 'sq':
+        if (char == "'") {
+          resultIndex += 1;
+          result[resultIndex] = '';
+          state = 'scan';
+        } else if (char == '\\') {
+          if (str[index + 1] == "'") {
+            index += 1;
+            result[resultIndex] += "'";
+          } else {
+            result[resultIndex] += '\\';
+          }
+        } else {
+          result[resultIndex] += char;
+        }
+        break;
+      case 'dq':
+        if (char == '"') {
+          resultIndex += 1;
+          result[resultIndex] = '';
+          state = 'scan';
+        } else if (char == '\\') {
+          if (str[index + 1] == '"') {
+            index += 1;
+            result[resultIndex] += '"';
+          } else {
+            result[resultIndex] += '\\';
+          }
+        } else {
+          result[resultIndex] += char;
+        }
+        break;
+    }
+    index += 1;
+  }
+  return result.filter((r) => r != '');
 };

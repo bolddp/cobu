@@ -48,7 +48,7 @@ export interface OpenUrlAction extends AppActionInterface {
 export interface OpenAppAction extends AppActionInterface {
   type: AppActionType.OpenApp;
   program: string;
-  args: string;
+  args: string[];
 }
 
 export interface SetVariable extends AppActionInterface {
