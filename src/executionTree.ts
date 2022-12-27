@@ -4,8 +4,13 @@ import { ConfigurationNode, AppConfiguration, Configuration } from './Configurat
 import { configureApplication, configureFlag } from './configure';
 import { setDebug } from './debug';
 import { deleteApplication, deleteCobuConfiguration, deleteFlag } from './delete';
-import { listApplications, printUsage } from './docs';
 import { editApplication } from './edit';
+import {
+  listApplication,
+  listApplications as listApplications,
+  listFlag,
+  printUsage,
+} from './list';
 import { runApplication } from './runApplication';
 import { selectCommand, selectApplication, selectFlag } from './selectors';
 
@@ -51,7 +56,21 @@ export const executionTree: ExecutionTreeNode = {
     {
       // list
       selector: (ctx) => selectCommand(ctx, commands.list),
-      action: listApplications,
+      nodes: [
+        {
+          // application
+          selector: (ctx) => selectApplication(ctx, 'throwOnMissing'),
+          nodes: [
+            {
+              // flag
+              selector: (ctx) => selectFlag(ctx, 'throwOnMissing'),
+              action: listFlag,
+            },
+          ],
+          orElse: listApplication,
+        },
+      ],
+      orElse: listApplications,
     },
     {
       // edit

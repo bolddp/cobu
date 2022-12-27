@@ -19,6 +19,8 @@ export interface Loc {
   couldNotLoadConfigCreatingNew: string;
   unexpectedArgument: (arg: string) => string;
   listApplicationsHeader: string;
+  listApplicationHeader: (appName: string) => string;
+  listFlagHeader: (appName: string, flagName: string) => string;
   noApplicationsAvailable: string;
   invalidAppName: (appName: string) => string;
   unresolvedOption: (option: string) => string;
@@ -33,6 +35,8 @@ export interface Loc {
   openingApp: (appName: string, args: string[]) => string;
   openingUrl: (url: string) => string;
   settingDebug: (value: boolean) => string;
+  actions: string;
+  flags: string;
 
   usageInfo: string[];
 }
@@ -75,7 +79,10 @@ const En: Loc = {
     `Are you sure you want to delete flag "${flagName}" in application "${appName}"? (y/n)`,
   couldNotLoadConfigCreatingNew: 'Could not load config file, creating empty one',
   unexpectedArgument: (arg) => `Unexpected argument: ${arg}`,
-  listApplicationsHeader: '\nConfigured applications and flags:',
+  listApplicationsHeader: 'Configured applications and flags',
+  listApplicationHeader: (appName) => `Configuration of application "${appName}"`,
+  listFlagHeader: (appName, flagName) =>
+    `Configuration of flag "${flagName}" in application "${appName}"`,
   noApplicationsAvailable: 'No applications have been configured yet',
   invalidAppName: (appName) =>
     `"${appName}" is not a valid application name, since there is a command by that name`,
@@ -99,6 +106,8 @@ const En: Loc = {
   openingApp: (appName, args) => `Opening app '${appName}' with arguments ${JSON.stringify(args)}`,
   openingUrl: (url) => `Opening URL "${url}"`,
   settingDebug: (value) => `Setting debug logging: ${value}`,
+  flags: '== Flags ==',
+  actions: '== Actions ==',
 
   usageInfo: [
     '*** COBU command builder - customizable Command Line Interface! ***',
@@ -121,12 +130,15 @@ const En: Loc = {
     header('Examples'),
     columns(
       [
-        ['cobu list', 'List all applications and their flags'],
         [
           'cobu config application [flag] actions',
           'Configure an application or application flag with one or more actions',
         ],
         ['cobu delete application [flag]', 'Delete an application or an application flag'],
+        [
+          'cobu list [application] [flag]',
+          'Lists info about an application or an application flag',
+        ],
         ['cobu edit', 'Opens the cobu configuration in your default text editor'],
         ['cobu debug "on"/"off"', 'Turn debug logging on or off. Off by default'],
       ],
