@@ -1,6 +1,6 @@
 {
   "name": "cobu",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Command Line Builder - programmable command line utility",
   "main": "dist/index.js",
   "files": [
@@ -14,8 +14,9 @@
     "clean": "node ./node_modules/rimraf/bin.js ./dist",
     "test": "jest --config=./jest.config.json",
     "coverage": "jest --config=./jest.config.json --coverage",
-    "npm:publish": "npm run clean:build && npm publish",
-    "clean:build": "npm run clean && npm run test && npx tsc --sourcemap false"
+    "prebuild": "npm run clean",
+    "build": "npx tsc --sourcemap false",
+    "npm:publish": "npm run test && npm run build && npm publish"
   },
   "repository": {
     "type": "git",
