@@ -37,6 +37,7 @@ export interface Loc {
   settingDebug: (value: boolean) => string;
   actions: string;
   flags: string;
+  circularVariableRef: (path: string) => string;
 
   usageInfo: string[];
 }
@@ -108,6 +109,7 @@ const En: Loc = {
   settingDebug: (value) => `Setting debug logging: ${value}`,
   flags: '== Flags ==',
   actions: '== Actions ==',
+  circularVariableRef: (path) => `Circular variable references detected: ${path}`,
 
   usageInfo: [
     '*** COBU command builder - customizable Command Line Interface! ***',
