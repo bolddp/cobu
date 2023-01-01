@@ -52,7 +52,7 @@ const configureNode = async (node: ConfigurationNode, ctx: ExecutionContext) => 
       node.instructions = instructions;
     } else {
       log.info(
-        loc.addingInstructions(instructions.length, ctx.appConfiguration!.name, ctx.flag!.name)
+        loc.addingInstructions(instructions.length, ctx.appConfiguration!.name, ctx.flag?.name)
       );
       node.instructions = (node.instructions ?? []).concat(instructions);
     }

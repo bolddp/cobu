@@ -53,3 +53,11 @@ export const unknownOptionError = (option: string): CobuError =>
 export const invalidDebugOptionError = (): CobuError => {
   return new CobuError(loc.invalidDebugOption);
 };
+
+export const circularVariableRefError = (path: string[]): CobuError => {
+  return new CobuError(loc.circularVariableRef(path.map((p) => `$${p}`).join(' -> ')));
+};
+
+export const missingApplicationError = (): CobuError => {
+  return new CobuError(loc.missingConfigureApp);
+};

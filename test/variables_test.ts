@@ -80,4 +80,23 @@ describe('variables', () => {
       'Variable "${subFolder}" could not be resolved, and no default value has been provided'
     );
   });
+
+  it('will throw on circular references', () => {
+    expect(() =>
+      resolveVariables({} as any, 'https://www.${domain}.se', [
+        {
+          name: 'domain',
+          value: '${var1}',
+        },
+        {
+          name: 'var1',
+          value: '${var2}',
+        },
+        {
+          name: 'var2',
+          value: '${domain}',
+        },
+      ])
+    ).toThrow('Circular variable references detected: $domain -> $var1 -> $var2 -> $domain');
+  });
 });

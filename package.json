@@ -1,6 +1,6 @@
 {
   "name": "cobu",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Command Line Builder - programmable command line utility",
   "main": "dist/index.js",
   "files": [
