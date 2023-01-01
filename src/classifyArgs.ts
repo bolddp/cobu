@@ -5,8 +5,8 @@ import { options } from './options';
 
 export const urlRegex = /^http[s]{0,1}:\/\/.+$/;
 
-const varAssignmentRegex = /^\$([a-zA-Z]+?)=(.*)$/;
-const varStatementRegex = /^\$\{(.*?)(?::(.*?)){0,1}\}$/;
+const varAssignmentRegex = /^\$([a-zA-Z0-9_]+?)=(.*)$/;
+const varStatementRegex = /^\$\{([a-zA-Z0-9_]*?)(?::(.*?)){0,1}\}$/;
 const appReferenceRegex = /^>[ ]{0,1}(.*?)(?: (.+)){0,1}$/;
 const flagRegex = /^[a-zA-Z]{1}[a-zA-Z0-9_\-]+$/;
 const optionRegex = /^\-\-(.*)$/;
