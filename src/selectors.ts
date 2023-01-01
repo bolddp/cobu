@@ -1,7 +1,12 @@
 import { ArgType } from './classifyArgs';
 import { isCommand } from './commands';
 import { AppConfiguration } from './Configuration';
-import { invalidAppNameError, unknownAppError, unknownFlagError } from './error';
+import {
+  invalidAppNameError,
+  missingApplicationError,
+  unknownAppError,
+  unknownFlagError,
+} from './error';
 import { ExecutionContext } from './executionTree';
 import { log } from './log';
 
@@ -18,22 +23,22 @@ export const selectApplication = (
   ctx: ExecutionContext,
   strategy: 'throwOnMissing' | 'create'
 ): boolean => {
-  const argment = ctx.args[0];
-  if (argment.type != ArgType.Flag) {
-    return false;
+  const argument = ctx.args[0];
+  if (isCommand(argument.name!)) {
+    throw invalidAppNameError(argument.name!);
   }
-  if (isCommand(argment.name!)) {
-    throw invalidAppNameError(argment.name!);
+  if (argument.type != ArgType.Flag) {
+    throw missingApplicationError();
   }
-  const arg = argment.name!;
-  const resultIndex = ctx.configuration.apps.findIndex((a) => a.name == arg);
+  const argName = argument.name!;
+  const resultIndex = ctx.configuration.apps.findIndex((a) => a.name == argName);
   if (resultIndex >= 0) {
-    log.debug(`select application: ${arg}`);
+    log.debug(`select application: ${argName}`);
     ctx.appConfiguration = ctx.configuration.apps[resultIndex];
   } else {
     if (strategy == 'create') {
-      log.debug(`create application: ${arg}`);
-      const application: AppConfiguration = { name: arg };
+      log.debug(`create application: ${argName}`);
+      const application: AppConfiguration = { name: argName };
       ctx.configuration.apps.push(application);
       ctx.appConfiguration = application;
     } else if (strategy == 'throwOnMissing') {

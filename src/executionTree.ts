@@ -6,6 +6,10 @@ import { setDebug } from './debug';
 import { deleteApplication, deleteCobuConfiguration, deleteFlag } from './delete';
 import { editApplication } from './edit';
 import {
+  missingApplicationError,
+  missingApplicationError as throwMissingConfigAppError,
+} from './error';
+import {
   listApplication,
   listApplications as listApplications,
   listFlag,
@@ -33,6 +37,9 @@ export const executionTree: ExecutionTreeNode = {
           orElse: configureApplication,
         },
       ],
+      orElse: async () => {
+        throw missingApplicationError();
+      },
     },
     {
       // delete
@@ -112,7 +119,7 @@ const executeNode = async (node: ExecutionTreeNode, ctx: ExecutionContext) => {
     }
   }
   // No matching subnodes were found, what should we do then?
-  node.orElse?.(ctx);
+  await node.orElse?.(ctx);
 };
 
 export type NodeAction = (ctx: ExecutionContext) => Promise<void>;

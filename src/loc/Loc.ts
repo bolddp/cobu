@@ -38,6 +38,7 @@ export interface Loc {
   actions: string;
   flags: string;
   circularVariableRef: (path: string) => string;
+  missingConfigureApp: string;
 
   usageInfo: string[];
 }
@@ -110,6 +111,7 @@ const En: Loc = {
   flags: '== Flags ==',
   actions: '== Actions ==',
   circularVariableRef: (path) => `Circular variable references detected: ${path}`,
+  missingConfigureApp: 'You need to provide an application',
 
   usageInfo: [
     '*** COBU command builder - customizable Command Line Interface! ***',
