@@ -83,7 +83,7 @@ const executeActions = async (
           await open.openApp(action.program);
         } else {
           const appArgs = action.args.map((arg) => resolveVariables(ctx, arg, variables));
-          log.info(loc.openingApp(action.program, action.args));
+          log.info(loc.openingApp(action.program, appArgs));
           await open.openApp(action.program, { arguments: appArgs });
         }
         break;
