@@ -9,6 +9,8 @@ import {
   missingApplicationError,
   missingApplicationError as throwMissingConfigAppError,
 } from './error';
+import { exportApplication } from './export';
+import { importApplication } from './import';
 import {
   listApplication,
   listApplications as listApplications,
@@ -78,6 +80,42 @@ export const executionTree: ExecutionTreeNode = {
         },
       ],
       orElse: listApplications,
+    },
+    {
+      // export
+      selector: (ctx) => selectCommand(ctx, commands.export),
+      nodes: [
+        {
+          // application
+          selector: (ctx) => selectApplication(ctx, 'throwOnMissing'),
+          nodes: [
+            // {
+            //   // flag
+            //   selector: (ctx) => selectFlag(ctx, 'throwOnMissing'),
+            //   action: exportFlag,
+            // },
+          ],
+          orElse: exportApplication,
+        },
+      ],
+    },
+    {
+      // import
+      selector: (ctx) => selectCommand(ctx, commands.import),
+      nodes: [
+        {
+          // application
+          selector: (ctx) => selectApplication(ctx, 'allow'),
+          nodes: [
+            // {
+            //   // flag
+            //   selector: (ctx) => selectFlag(ctx, 'throwOnMissing'),
+            //   action: exportFlag,
+            // },
+          ],
+          orElse: importApplication,
+        },
+      ],
     },
     {
       // edit

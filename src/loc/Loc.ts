@@ -21,6 +21,7 @@ export interface Loc {
   listApplicationsHeader: string;
   listApplicationHeader: (appName: string) => string;
   listFlagHeader: (appName: string, flagName: string) => string;
+  exportApplicationHeader: (appName: string) => string;
   noApplicationsAvailable: string;
   invalidAppName: (appName: string) => string;
   unresolvedOption: (option: string) => string;
@@ -39,6 +40,9 @@ export interface Loc {
   flags: string;
   circularVariableRef: (path: string) => string;
   missingConfigureApp: string;
+  invalidImportInput: string;
+  confirmInputExistingApp: (appName: string) => string;
+  importedAppSuccessfully: (appName: string) => string;
 
   usageInfo: string[];
 }
@@ -85,6 +89,8 @@ const En: Loc = {
   listApplicationHeader: (appName) => `Configuration of application "${appName}"`,
   listFlagHeader: (appName, flagName) =>
     `Configuration of flag "${flagName}" in application "${appName}"`,
+  exportApplicationHeader: (appName) =>
+    `Import ${appName} into another cobu installation by copying and executing the following command`,
   noApplicationsAvailable: 'No applications have been configured yet',
   invalidAppName: (appName) =>
     `"${appName}" is not a valid application name, since there is a command by that name`,
@@ -112,6 +118,11 @@ const En: Loc = {
   actions: '== Actions ==',
   circularVariableRef: (path) => `Circular variable references detected: ${path}`,
   missingConfigureApp: 'You need to provide an application',
+  invalidImportInput:
+    'The provided import input could not be parsed correctly, make sure the entire output from export is included',
+  confirmInputExistingApp: (appName) =>
+    `There is already an app named "${appName}", are you sure you want to overwrite it?`,
+  importedAppSuccessfully: (appName) => `Application "${appName}" was successfully imported`,
 
   usageInfo: [
     '*** COBU command builder - customizable Command Line Interface! ***',

@@ -3,6 +3,8 @@ export const commands = {
   delete: ['delete', 'del'],
   list: ['list'],
   edit: ['edit'],
+  export: ['export'],
+  import: ['import'],
   debug: ['debug'],
   help: ['--help', 'help'],
 };

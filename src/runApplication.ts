@@ -64,7 +64,7 @@ export const runApplication = async (ctx: ExecutionContext) => {
   }
 
   if ((actions ?? []).length == 0) {
-    throw noActionFoundError(ctx);
+    throw noActionFoundError();
   }
 
   await executeActions(ctx, actions!, variables);

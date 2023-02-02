@@ -62,13 +62,7 @@ describe('error', () => {
   });
 
   it('will create noActionFoundError', () => {
-    const error = noActionFoundError({
-      configuration: {
-        apps: [],
-        debugLogging: false,
-      },
-      args: [],
-    });
+    const error = noActionFoundError();
 
     expect(error.message).toEqual('Could not find any action to perform');
   });

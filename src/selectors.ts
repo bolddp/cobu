@@ -21,7 +21,7 @@ export const selectCommand = (ctx: ExecutionContext, commands: string[]): boolea
 
 export const selectApplication = (
   ctx: ExecutionContext,
-  strategy: 'throwOnMissing' | 'create'
+  strategy: 'throwOnMissing' | 'create' | 'allow'
 ): boolean => {
   const argument = ctx.args[0];
   if (isCommand(argument.name!)) {
@@ -45,7 +45,9 @@ export const selectApplication = (
       throw unknownAppError(ctx);
     }
   }
-  ctx.args = ctx.args.slice(1);
+  if (strategy != 'allow') {
+    ctx.args = ctx.args.slice(1);
+  }
   return true;
 };
 

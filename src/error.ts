@@ -24,8 +24,7 @@ export const unknownFlagError = (ctx: ExecutionContext): CobuError => {
   return new CobuError(error, info);
 };
 
-export const noActionFoundError = (ctx: ExecutionContext): CobuError =>
-  new CobuError(loc.noActionFound);
+export const noActionFoundError = (): CobuError => new CobuError(loc.noActionFound);
 
 export const variableNotFoundError = (varName: string, ctx: ExecutionContext): CobuError => {
   const error = loc.variableNotFound(varName);
@@ -60,4 +59,8 @@ export const circularVariableRefError = (path: string[]): CobuError => {
 
 export const missingApplicationError = (): CobuError => {
   return new CobuError(loc.missingConfigureApp);
+};
+
+export const invalidImportInputError = (): CobuError => {
+  return new CobuError(loc.invalidImportInput);
 };
